@@ -2,7 +2,7 @@
 
 A polished Arch Linux + Hyprland desktop environment, ready to deploy.
 
-![Hyprland Desktop](https://raw.githubusercontent.com/YOUR_USERNAME/SwitchArch/main/screenshots/desktop.png)
+![Hyprland Desktop](https://raw.githubusercontent.com/Djwarf/SwitchArch/main/screenshots/desktop.png)
 
 ## Features
 
@@ -36,7 +36,7 @@ Press `SUPER + SHIFT + T` to cycle through themes!
 
 ```bash
 # Clone the repository
-git clone https://github.com/YOUR_USERNAME/SwitchArch.git
+git clone https://github.com/Djwarf/SwitchArch.git
 cd SwitchArch
 
 # Run the installer
@@ -308,4 +308,4 @@ MIT License - Feel free to use, modify, and distribute.
 
 **Enjoy your new desktop!** 🚀
 
-If you have issues or suggestions, please [open an issue](https://github.com/YOUR_USERNAME/SwitchArch/issues).
+If you have issues or suggestions, please [open an issue](https://github.com/Djwarf/SwitchArch/issues).
