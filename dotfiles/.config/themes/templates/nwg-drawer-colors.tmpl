@@ -1,0 +1,57 @@
+/* NWG-Drawer Theme - Brand Guide - Glassmorphism */
+
+window {
+    background-color: rgba({{BG_LIGHT_RGB}}, 0.88);
+    color: {{TEXT}};
+    border: 1px solid rgba({{PRIMARY_DARKEST_RGB}}, 0.5);
+}
+
+/* search entry */
+entry {
+    background-color: rgba({{BG_DARK_RGB}}, 0.75);
+    color: {{TEXT}};
+    border: 1px solid rgba({{BORDER_RGB}}, 0.4);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    padding: 8px 12px;
+}
+
+entry:focus {
+    border-color: rgba({{PRIMARY_RGB}}, 0.5);
+}
+
+button, image {
+    background: none;
+    border: none;
+    color: {{TEXT}};
+}
+
+button:hover {
+    background-color: rgba({{PRIMARY_DARK_RGB}}, 0.6);
+    border-radius: 8px;
+}
+
+/* category buttons */
+#category-button {
+    margin: 0 10px 0 10px;
+    color: {{PRIMARY}};
+}
+
+#pinned-box {
+    padding-bottom: 5px;
+    border-bottom: 1px solid rgba({{PRIMARY_RGB}}, 0.3);
+}
+
+#files-box {
+    padding: 5px;
+    border: 1px solid rgba({{PRIMARY_RGB}}, 0.3);
+    border-radius: 12px;
+    background: rgba({{PRIMARY_DARKEST_RGB}}, 0.3);
+}
+
+/* math operation result label */
+#math-label {
+    font-weight: bold;
+    font-size: 16px;
+    color: {{PRIMARY_LIGHT}};
+}

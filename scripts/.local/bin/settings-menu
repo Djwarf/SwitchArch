@@ -1,0 +1,47 @@
+#!/bin/bash
+# Settings Menu - Quick access to system settings via wofi
+
+choice=$(cat << 'EOF' | wofi --dmenu --prompt "Settings" --width 300 --height 300
+ WiFi
+ Bluetooth
+ Sound
+ Display
+ Wallpaper
+ Appearance
+ Updates
+EOF
+)
+
+case "$choice" in
+    " WiFi")
+        nm-connection-editor
+        ;;
+    " Bluetooth")
+        blueman-manager
+        ;;
+    " Sound")
+        pavucontrol
+        ;;
+    " Display")
+        if command -v wdisplays &>/dev/null; then
+            wdisplays
+        elif command -v nwg-displays &>/dev/null; then
+            nwg-displays
+        else
+            notify-send "Display settings" "Install wdisplays or nwg-displays"
+        fi
+        ;;
+    " Wallpaper")
+        waypaper
+        ;;
+    " Appearance")
+        if command -v nwg-look &>/dev/null; then
+            nwg-look
+        else
+            notify-send "Appearance" "Install nwg-look for theme settings"
+        fi
+        ;;
+    " Updates")
+        kitty -e sudo pacman -Syu
+        ;;
+esac

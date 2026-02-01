@@ -1,0 +1,41 @@
+/* SwayOSD Theme - Brand Guide - Glassmorphism */
+
+window#osd {
+    background: rgba(55, 55, 55, 0.65);
+    border: 1px solid rgba(62, 0, 0, 0.5);
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    padding: 12px 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+#container {
+    margin: 10px;
+}
+
+image {
+    color: #E5E5E5;
+}
+
+levelbar block.filled {
+    background: linear-gradient(to right, #2e0000, #8b5555);
+    border-radius: 4px;
+}
+
+levelbar block.empty {
+    background: #404040;
+    border-radius: 4px;
+}
+
+levelbar trough {
+    background: rgba(23, 23, 23, 0.6);
+    border-radius: 6px;
+    min-height: 10px;
+    border: 1px solid rgba(64, 64, 64, 0.3);
+}
+
+label {
+    color: #E5E5E5;
+    font-family: "Crimson Text";
+    font-size: 14px;
+}

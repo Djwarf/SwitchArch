@@ -1,0 +1,22 @@
+{
+  "name": "forest",
+  "display_name": "Forest Canopy",
+  "colors": {
+    "bg_dark": "#0d1512",
+    "bg": "#1a2f23",
+    "bg_light": "#243b2e",
+    "primary_darkest": "#1b4332",
+    "primary_dark": "#1e5631",
+    "primary": "#2d6a4f",
+    "primary_light": "#74c69d",
+    "accent": "#52b788",
+    "text_bright": "#F5F5F5",
+    "text": "#E5E5E5",
+    "text_muted": "#A3A3A3",
+    "text_dim": "#525252",
+    "border": "#2d4a3a",
+    "danger": "#e63946",
+    "warning": "#f4a261",
+    "success": "#40916c"
+  }
+}

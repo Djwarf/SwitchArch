@@ -1,0 +1,51 @@
+# SwitchArch - Hyprland Desktop Environment
+# Packages for the complete Hyprland experience
+# Install with: pacman -S --needed - < hyprland.txt
+
+# Core compositor
+hyprland
+
+# Hyprland ecosystem
+hypridle
+hyprlock
+hyprpaper
+hyprpicker
+
+# Status bar
+waybar
+
+# Launchers
+fuzzel
+
+# Notifications
+dunst
+swaync
+
+# Clipboard
+cliphist
+wl-clipboard
+
+# Screenshot/screen tools
+grim
+slurp
+
+# Display management
+ddcutil
+nwg-displays
+
+# App drawer & dock
+nwg-drawer
+
+# Session management
+polkit-kde-agent
+
+# Display manager
+sddm
+
+# Input debugging
+evtest
+wev
+
+# GTK theming
+adw-gtk-theme
+papirus-icon-theme

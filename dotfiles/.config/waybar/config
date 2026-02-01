@@ -1,0 +1,318 @@
+{
+    "layer": "top",
+    "position": "top",
+    "height": 28,
+    "modules-left": [
+        "custom/launcher",
+        "hyprland/workspaces",
+        "hyprland/window"
+    ],
+    "modules-center": [
+        "clock"
+    ],
+    "modules-right": [
+        "group/media",
+        "group/info",
+        "group/hardware",
+        "group/connectivity",
+        "group/actions",
+        "tray"
+    ],
+    "group/media": {
+        "orientation": "inherit",
+        "drawer": {
+            "transition-duration": 300,
+            "transition-left-to-right": false,
+            "click-to-reveal": true
+        },
+        "modules": [
+            "custom/media-icon",
+            "custom/media-prev",
+            "custom/media-play",
+            "custom/media-next",
+            "custom/media"
+        ]
+    },
+    "group/info": {
+        "orientation": "inherit",
+        "drawer": {
+            "transition-duration": 300,
+            "transition-left-to-right": false,
+            "click-to-reveal": true
+        },
+        "modules": [
+            "custom/info-icon",
+            "custom/weather",
+            "custom/calendar",
+            "custom/notification"
+        ]
+    },
+    "group/hardware": {
+        "orientation": "inherit",
+        "drawer": {
+            "transition-duration": 300,
+            "transition-left-to-right": false,
+            "click-to-reveal": true
+        },
+        "modules": [
+            "custom/hardware-icon",
+            "custom/net-speed",
+            "cpu",
+            "memory",
+            "custom/cpu-temp",
+            "custom/gpu-temp",
+            "custom/disk"
+        ]
+    },
+    "group/connectivity": {
+        "orientation": "inherit",
+        "drawer": {
+            "transition-duration": 300,
+            "transition-left-to-right": false,
+            "click-to-reveal": true
+        },
+        "modules": [
+            "custom/connectivity-icon",
+            "network",
+            "bluetooth",
+            "pulseaudio"
+        ]
+    },
+    "group/actions": {
+        "orientation": "inherit",
+        "drawer": {
+            "transition-duration": 300,
+            "transition-left-to-right": false,
+            "click-to-reveal": true
+        },
+        "modules": [
+            "custom/actions-icon",
+            "custom/updates",
+            "custom/sunshine",
+            "custom/screenshot",
+            "custom/clipboard",
+            "custom/lock",
+            "custom/settings",
+            "custom/power"
+        ]
+    },
+    "custom/media-icon": {
+        "format": "",
+        "tooltip-format": "Media Controls"
+    },
+    "custom/info-icon": {
+        "format": "",
+        "tooltip-format": "Info and Notifications"
+    },
+    "custom/hardware-icon": {
+        "format": "",
+        "tooltip-format": "System Hardware"
+    },
+    "custom/connectivity-icon": {
+        "format": "",
+        "tooltip-format": "Connectivity"
+    },
+    "custom/actions-icon": {
+        "format": "",
+        "tooltip-format": "Quick Actions"
+    },
+    "hyprland/workspaces": {
+        "format": "{icon}",
+        "on-click": "activate",
+        "on-scroll-up": "hyprctl dispatch workspace e+1",
+        "on-scroll-down": "hyprctl dispatch workspace e-1",
+        "persistent-workspaces": {
+            "*": 10
+        },
+        "format-icons": {
+            "1": "١",
+            "2": "٢",
+            "3": "٣",
+            "4": "٤",
+            "5": "٥",
+            "6": "٦",
+            "7": "٧",
+            "8": "٨",
+            "9": "٩",
+            "10": "١٠",
+            "default": "٠"
+        }
+    },
+    "hyprland/window": {
+        "format": "{}",
+        "max-length": 40,
+        "separate-outputs": true
+    },
+    "clock": {
+        "format": "{:%H:%M:%S  󰃭 %a %d %b}",
+        "format-alt": "{:%Y-%m-%d %H:%M:%S}",
+        "interval": 1,
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
+    },
+    "custom/media": {
+        "format": "{}",
+        "max-length": 35,
+        "return-type": "json",
+        "exec": "~/.local/bin/waybar-media",
+        "interval": 1,
+        "on-click": "playerctl play-pause",
+        "on-scroll-up": "playerctl next",
+        "on-scroll-down": "playerctl previous"
+    },
+    "custom/media-prev": {
+        "format": "",
+        "on-click": "playerctl previous",
+        "tooltip-format": "Previous Track"
+    },
+    "custom/media-play": {
+        "format": "",
+        "on-click": "playerctl play-pause",
+        "tooltip-format": "Play/Pause"
+    },
+    "custom/media-next": {
+        "format": "",
+        "on-click": "playerctl next",
+        "tooltip-format": "Next Track"
+    },
+    "custom/weather": {
+        "format": "{}",
+        "return-type": "json",
+        "exec": "~/.local/bin/waybar-weather",
+        "interval": 1800,
+        "on-click": "xdg-open 'https://wttr.in'"
+    },
+    "custom/calendar": {
+        "format": " {}",
+        "return-type": "json",
+        "exec": "switchcal --waybar",
+        "interval": 60,
+        "on-click": "switchcal"
+    },
+    "custom/notification": {
+        "format": "",
+        "tooltip-format": "Notifications",
+        "on-click": "swaync-client -t -sw 2>/dev/null || notify-send 'Notifications' 'swaync not running'",
+        "on-click-right": "swaync-client -d -sw 2>/dev/null"
+    },
+    "custom/cpu-temp": {
+        "format": " {}",
+        "return-type": "json",
+        "exec": "~/.local/bin/waybar-cpu-temp",
+        "interval": 5
+    },
+    "custom/gpu-temp": {
+        "format": " {}",
+        "return-type": "json",
+        "exec": "~/.local/bin/waybar-gpu-temp",
+        "interval": 5
+    },
+    "custom/disk": {
+        "format": " {}",
+        "return-type": "json",
+        "exec": "~/.local/bin/waybar-disk",
+        "interval": 60,
+        "on-click": "kitty -e ncdu ~"
+    },
+    "custom/net-speed": {
+        "format": "{}",
+        "return-type": "json",
+        "exec": "~/.local/bin/waybar-net-speed",
+        "interval": 2
+    },
+    "cpu": {
+        "format": " {usage}%",
+        "tooltip-format": "CPU Usage: {usage}%\n{avg_frequency}GHz"
+    },
+    "memory": {
+        "format": " {}%",
+        "tooltip-format": "Memory: {used:0.1f}GB / {total:0.1f}GB ({percentage}%)\nSwap: {swapUsed:0.1f}GB / {swapTotal:0.1f}GB"
+    },
+    "network": {
+        "format-wifi": " {signalStrength}%",
+        "format-ethernet": "",
+        "format-disconnected": "",
+        "format-alt": " {essid}",
+        "tooltip-format-wifi": "SSID: {essid}\nSignal: {signalStrength}%\nFrequency: {frequency}GHz\nIP: {ipaddr}/{cidr}",
+        "tooltip-format-ethernet": "Interface: {ifname}\nIP: {ipaddr}/{cidr}",
+        "tooltip-format-disconnected": "Disconnected",
+        "interval": 2,
+        "on-click": "nm-connection-editor",
+        "on-click-right": "nmcli device wifi rescan"
+    },
+    "bluetooth": {
+        "format": " {status}",
+        "format-connected": " {device_alias}",
+        "format-connected-battery": " {device_alias} {device_battery_percentage}%",
+        "format-disabled": "",
+        "format-off": "",
+        "tooltip-format": "Bluetooth: {controller_alias}\nStatus: {status}",
+        "tooltip-format-connected": "Connected: {device_enumerate}",
+        "tooltip-format-enumerate-connected": "{device_alias}",
+        "tooltip-format-enumerate-connected-battery": "{device_alias} ({device_battery_percentage}%)",
+        "on-click": "blueman-manager",
+        "on-click-right": "bluetoothctl power toggle"
+    },
+    "pulseaudio": {
+        "format": "{icon} {volume}%",
+        "format-muted": " Muted",
+        "format-icons": {
+            "default": [
+                "",
+                "",
+                ""
+            ]
+        },
+        "on-click": "pavucontrol",
+        "on-click-right": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
+        "on-scroll-up": "pactl set-sink-volume @DEFAULT_SINK@ +5%",
+        "on-scroll-down": "pactl set-sink-volume @DEFAULT_SINK@ -5%"
+    },
+    "custom/updates": {
+        "format": " {}",
+        "return-type": "json",
+        "exec": "COUNT=$(checkupdates 2>/dev/null | wc -l); [ \"$COUNT\" -gt 0 ] && echo '{\"text\": \"'$COUNT'\", \"tooltip\": \"'$COUNT' pending updates\", \"class\": \"has-updates\"}' || echo '{\"text\": \"0\", \"tooltip\": \"System up to date\"}'",
+        "interval": 3600,
+        "on-click": "kitty -e sudo pacman -Syu"
+    },
+    "custom/sunshine": {
+        "format": "{}",
+        "return-type": "json",
+        "exec": "pgrep -x sunshine >/dev/null && echo '{\"text\": \"\", \"tooltip\": \"Sunshine streaming active\", \"class\": \"active\"}' || echo '{\"text\": \"\", \"tooltip\": \"Start Sunshine\", \"class\": \"inactive\"}'",
+        "interval": 5,
+        "on-click": "sunshine"
+    },
+    "custom/launcher": {
+        "format": "",
+        "on-click": "pkill nwg-drawer || nwg-drawer",
+        "tooltip-format": "App Drawer"
+    },
+    "custom/screenshot": {
+        "format": "",
+        "on-click": "~/.local/bin/screenshot region save",
+        "on-click-right": "~/.local/bin/screenshot full save",
+        "tooltip-format": "Screenshot (L: region, R: full)"
+    },
+    "custom/clipboard": {
+        "format": "",
+        "on-click": "pkill fuzzel || cliphist list | fuzzel --dmenu --prompt 'Clipboard: ' | cliphist decode | wl-copy",
+        "tooltip-format": "Clipboard History"
+    },
+    "custom/lock": {
+        "format": "",
+        "on-click": "hyprlock",
+        "tooltip-format": "Lock Screen"
+    },
+    "custom/settings": {
+        "format": "",
+        "on-click": "~/.local/bin/quick-settings",
+        "tooltip-format": "Quick Settings"
+    },
+    "custom/power": {
+        "format": "",
+        "on-click": "pkill wlogout || wlogout -p layer-shell",
+        "tooltip-format": "Power Menu"
+    },
+    "tray": {
+        "spacing": 10
+    }
+}

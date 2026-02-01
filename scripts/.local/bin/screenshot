@@ -1,0 +1,40 @@
+#!/bin/bash
+# Screenshot utility for Hyprland
+# Usage: screenshot [full|region] [save|copy|edit]
+
+SCREENSHOT_DIR="$HOME/Pictures/Screenshots"
+mkdir -p "$SCREENSHOT_DIR"
+
+FILENAME="$SCREENSHOT_DIR/screenshot_$(date +%Y%m%d_%H%M%S).png"
+
+MODE="${1:-full}"
+ACTION="${2:-save}"
+
+case "$MODE" in
+    full)
+        grim "$FILENAME"
+        ;;
+    region)
+        grim -g "$(slurp)" "$FILENAME"
+        ;;
+esac
+
+if [ ! -f "$FILENAME" ]; then
+    notify-send "Screenshot" "Cancelled or failed" -u low
+    exit 1
+fi
+
+case "$ACTION" in
+    save)
+        notify-send "Screenshot Saved" "$FILENAME" -i "$FILENAME"
+        ;;
+    copy)
+        wl-copy < "$FILENAME"
+        rm "$FILENAME"
+        notify-send "Screenshot" "Copied to clipboard" -u low
+        ;;
+    edit)
+        swappy -f "$FILENAME" -o "$FILENAME"
+        notify-send "Screenshot Saved" "$FILENAME" -i "$FILENAME"
+        ;;
+esac

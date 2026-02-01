@@ -1,0 +1,34 @@
+# Backup files
+*.bak
+*~
+
+# Secrets and sensitive data
+*.secret
+*.key
+.env
+credentials*
+
+# Editor artifacts
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.log
+
+# Node modules (if any waybar scripts use them)
+node_modules/
+
+# State files that shouldn't be shared
+dotfiles/.config/waybar/.mode
+dotfiles/.config/waybar/.size
+dotfiles/.config/themes/current-theme
+
+# User-specific configs that will be generated
+*.local

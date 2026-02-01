@@ -1,0 +1,62 @@
+#!/bin/bash
+# Network speed module for waybar (no bc dependency)
+
+# Find primary network interface
+INTERFACE=$(ip route | grep default | awk '{print $5}' | head -1)
+
+if [ -z "$INTERFACE" ]; then
+    echo '{"text": "", "tooltip": "No network"}'
+    exit 0
+fi
+
+CACHE_FILE="/tmp/waybar-net-speed-cache"
+
+# Get current bytes
+RX_NOW=$(cat /sys/class/net/$INTERFACE/statistics/rx_bytes 2>/dev/null || echo 0)
+TX_NOW=$(cat /sys/class/net/$INTERFACE/statistics/tx_bytes 2>/dev/null || echo 0)
+TIME_NOW=$(date +%s)
+
+# Read previous values
+if [ -f "$CACHE_FILE" ]; then
+    read RX_PREV TX_PREV TIME_PREV < "$CACHE_FILE"
+else
+    RX_PREV=$RX_NOW
+    TX_PREV=$TX_NOW
+    TIME_PREV=$TIME_NOW
+fi
+
+# Save current values
+echo "$RX_NOW $TX_NOW $TIME_NOW" > "$CACHE_FILE"
+
+# Calculate speed (bytes per second)
+TIME_DIFF=$((TIME_NOW - TIME_PREV))
+if [ "$TIME_DIFF" -gt 0 ]; then
+    RX_SPEED=$(( (RX_NOW - RX_PREV) / TIME_DIFF ))
+    TX_SPEED=$(( (TX_NOW - TX_PREV) / TIME_DIFF ))
+else
+    RX_SPEED=0
+    TX_SPEED=0
+fi
+
+# Handle negative values (interface reset)
+[ "$RX_SPEED" -lt 0 ] && RX_SPEED=0
+[ "$TX_SPEED" -lt 0 ] && TX_SPEED=0
+
+# Format speeds (pure bash, no bc)
+format_speed() {
+    local speed=$1
+    if [ "$speed" -ge 1073741824 ]; then
+        echo "$((speed / 1073741824))G"
+    elif [ "$speed" -ge 1048576 ]; then
+        echo "$((speed / 1048576))M"
+    elif [ "$speed" -ge 1024 ]; then
+        echo "$((speed / 1024))K"
+    else
+        echo "${speed}B"
+    fi
+}
+
+RX_FMT=$(format_speed $RX_SPEED)
+TX_FMT=$(format_speed $TX_SPEED)
+
+echo "{\"text\": \" ${RX_FMT}  ${TX_FMT}\", \"tooltip\": \"Interface: ${INTERFACE}\nDownload: ${RX_FMT}/s\nUpload: ${TX_FMT}/s\"}"

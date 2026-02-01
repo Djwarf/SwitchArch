@@ -1,0 +1,43 @@
+/* NWG-Dock Theme - Brand Guide - Glassmorphism */
+
+window {
+    background: rgba(55, 55, 55, 0.20);
+    border-radius: 12px;
+    border: 1px solid rgba(62, 0, 0, 0.5);
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+#box {
+    padding: 10px;
+}
+
+#active {
+    border-bottom: solid 2px;
+    border-color: rgba(139, 85, 85, 0.8);
+}
+
+button, image {
+    background: none;
+    border-style: none;
+    box-shadow: none;
+    color: #E5E5E5;
+}
+
+button {
+    padding: 4px;
+    margin-left: 4px;
+    margin-right: 4px;
+    color: #E5E5E5;
+    font-size: 12px;
+    border-radius: 8px;
+}
+
+button:hover {
+    background-color: rgba(62, 0, 0, 0.7);
+    border-radius: 8px;
+}
+
+button:focus {
+    box-shadow: none;
+}

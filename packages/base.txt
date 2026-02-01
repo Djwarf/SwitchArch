@@ -1,0 +1,72 @@
+# SwitchArch - Base System Packages
+# Essential packages for a functioning Arch system
+# Install with: pacman -S --needed - < base.txt
+
+# Core system
+base
+base-devel
+linux
+linux-firmware
+linux-headers
+efibootmgr
+grub
+sudo
+
+# Networking
+networkmanager
+openssh
+tailscale
+ufw
+
+# Filesystems
+gvfs
+ntfs-3g
+
+# Compression
+7zip
+unrar
+unzip
+xarchiver
+
+# Shell & terminal utilities
+bat
+duf
+eza
+fd
+fzf
+jq
+ncdu
+plocate
+ripgrep
+starship
+tldr
+tmux
+tokei
+trash-cli
+tree
+zoxide
+
+# Development tools
+cmake
+git
+github-cli
+go
+neovim
+lazygit
+
+# System monitoring
+btop
+nvtop
+hyperfine
+
+# System utilities
+borg
+pacman-contrib
+reflector
+socat
+zram-generator
+
+# Fonts
+noto-fonts-emoji
+ttf-jetbrains-mono-nerd
+woff2-font-awesome

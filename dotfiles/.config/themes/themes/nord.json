@@ -1,0 +1,22 @@
+{
+  "name": "nord",
+  "display_name": "Arctic Nord",
+  "colors": {
+    "bg_dark": "#242933",
+    "bg": "#2e3440",
+    "bg_light": "#3b4252",
+    "primary_darkest": "#3b4252",
+    "primary_dark": "#434c5e",
+    "primary": "#5e81ac",
+    "primary_light": "#88c0d0",
+    "accent": "#81a1c1",
+    "text_bright": "#ECEFF4",
+    "text": "#D8DEE9",
+    "text_muted": "#9ba3af",
+    "text_dim": "#4c566a",
+    "border": "#4c566a",
+    "danger": "#bf616a",
+    "warning": "#ebcb8b",
+    "success": "#a3be8c"
+  }
+}

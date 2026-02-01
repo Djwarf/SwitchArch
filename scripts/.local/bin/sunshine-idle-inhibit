@@ -1,0 +1,79 @@
+#!/bin/bash
+# Monitors Sunshine streaming status and inhibits idle when active
+
+SUNSHINE_LOG="${HOME}/.config/sunshine/sunshine.log"
+INHIBIT_PID=""
+
+cleanup() {
+    if [ -n "$INHIBIT_PID" ] && kill -0 "$INHIBIT_PID" 2>/dev/null; then
+        kill "$INHIBIT_PID" 2>/dev/null
+    fi
+    exit 0
+}
+
+trap cleanup EXIT INT TERM
+
+start_inhibit() {
+    if [ -z "$INHIBIT_PID" ] || ! kill -0 "$INHIBIT_PID" 2>/dev/null; then
+        systemd-inhibit --what=idle:sleep:handle-lid-switch \
+            --who="Sunshine Streaming" \
+            --why="Active game streaming session" \
+            sleep infinity &
+        INHIBIT_PID=$!
+        echo "[$(date)] Started idle inhibit (PID: $INHIBIT_PID)"
+    fi
+}
+
+stop_inhibit() {
+    if [ -n "$INHIBIT_PID" ] && kill -0 "$INHIBIT_PID" 2>/dev/null; then
+        kill "$INHIBIT_PID" 2>/dev/null
+        INHIBIT_PID=""
+        echo "[$(date)] Stopped idle inhibit"
+    fi
+}
+
+check_streaming() {
+    # Method 1: Check log for active streaming indicators (encoder creation, bitrate)
+    if [ -f "$SUNSHINE_LOG" ]; then
+        local recent_log=$(tail -50 "$SUNSHINE_LOG" 2>/dev/null)
+
+        # Active streaming indicators from Sunshine logs
+        if echo "$recent_log" | grep -qE "Creating encoder|Streaming bitrate|Selected monitor.*for streaming"; then
+            # Make sure session hasn't ended
+            if ! echo "$recent_log" | tail -5 | grep -qE "Stopping|Disconnected|Session ended"; then
+                return 0
+            fi
+        fi
+    fi
+
+    # Method 2: Check for established connections on Sunshine ports
+    if ss -tnp 2>/dev/null | grep sunshine | grep -qE 'ESTAB'; then
+        return 0
+    fi
+
+    # Method 3: Check thread count (active streaming = more threads)
+    local sunshine_pid=$(pgrep -x sunshine)
+    if [ -n "$sunshine_pid" ] && [ -d "/proc/$sunshine_pid/task" ]; then
+        local thread_count=$(ls "/proc/$sunshine_pid/task" 2>/dev/null | wc -l)
+        if [ "$thread_count" -gt 15 ]; then
+            return 0
+        fi
+    fi
+
+    return 1
+}
+
+echo "[$(date)] Starting Sunshine idle inhibit monitor..."
+
+while true; do
+    if pgrep -x sunshine >/dev/null; then
+        if check_streaming; then
+            start_inhibit
+        else
+            stop_inhibit
+        fi
+    else
+        stop_inhibit
+    fi
+    sleep 3
+done

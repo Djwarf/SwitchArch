@@ -1,0 +1,13 @@
+[Unit]
+Description=Sunshine Idle Inhibit Monitor
+After=sunshine.service
+BindsTo=sunshine.service
+
+[Service]
+Type=simple
+ExecStart=%h/.local/bin/sunshine-idle-inhibit
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=sunshine.service

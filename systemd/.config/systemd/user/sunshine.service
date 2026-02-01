@@ -1,0 +1,14 @@
+[Unit]
+Description=Self-hosted game stream host for Moonlight
+StartLimitIntervalSec=500
+StartLimitBurst=5
+
+[Service]
+ExecStartPre=/bin/sleep 5
+ExecStart=/usr/bin/systemd-inhibit --what=idle:sleep:handle-lid-switch --who="Sunshine" --why="Game streaming active" /usr/bin/sunshine
+
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=xdg-desktop-autostart.target

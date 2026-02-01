@@ -1,0 +1,47 @@
+#!/bin/bash
+# Waybar autohide manager
+# Runs a trigger bar and shows main bar on hover
+
+CONFIG_DIR="$HOME/.config/waybar"
+MAIN_PID=""
+VISIBLE=false
+
+show_main() {
+    if [ "$VISIBLE" = false ]; then
+        waybar -c "$CONFIG_DIR/config" -s "$CONFIG_DIR/style.css" &>/dev/null &
+        MAIN_PID=$!
+        VISIBLE=true
+    fi
+}
+
+hide_main() {
+    if [ "$VISIBLE" = true ] && [ -n "$MAIN_PID" ]; then
+        kill $MAIN_PID 2>/dev/null
+        VISIBLE=false
+    fi
+}
+
+cleanup() {
+    hide_main
+    pkill -f "waybar.*config-trigger"
+    exit 0
+}
+
+trap cleanup EXIT INT TERM
+
+# Start trigger bar
+waybar -c "$CONFIG_DIR/config-trigger" -s "$CONFIG_DIR/style-trigger.css" &>/dev/null &
+
+# Monitor mouse position
+while true; do
+    # Get cursor Y position
+    CURSOR_Y=$(hyprctl cursorpos -j | jq '.y')
+
+    if [ "$CURSOR_Y" -lt 50 ]; then
+        show_main
+    elif [ "$CURSOR_Y" -gt 100 ]; then
+        hide_main
+    fi
+
+    sleep 0.3
+done

@@ -1,0 +1,64 @@
+#!/bin/bash
+# Enhanced weather module with Font Awesome icons
+
+# Map weather conditions to Font Awesome icons
+get_icon() {
+    case "$1" in
+        *"Clear"*|*"Sunny"*) echo "" ;;
+        *"Partly"*|*"Cloudy"*) echo "" ;;
+        *"Overcast"*) echo "" ;;
+        *"Rain"*|*"Drizzle"*|*"shower"*) echo "" ;;
+        *"Thunder"*|*"Storm"*) echo "" ;;
+        *"Snow"*|*"Sleet"*|*"Blizzard"*) echo "" ;;
+        *"Fog"*|*"Mist"*|*"Haze"*) echo "" ;;
+        *"Wind"*) echo "" ;;
+        *) echo "" ;;
+    esac
+}
+
+# Get weather data (with timeout)
+WEATHER_DATA=$(curl -s --max-time 10 "wttr.in/?format=j1" 2>/dev/null)
+
+# Check if we got valid JSON
+JQ_CHECK=$(jq -e '.current_condition[0]' 2>/dev/null <<< "$WEATHER_DATA")
+if [ -z "$WEATHER_DATA" ] || [ -z "$JQ_CHECK" ]; then
+    # Fallback to simple format
+    SIMPLE=$(curl -s --max-time 5 'wttr.in/?format=%c%t' 2>/dev/null | tr -d '+' | head -1)
+    if [ -n "$SIMPLE" ] && [ "$SIMPLE" != "Unknown" ]; then
+        echo "{\"text\": \"$SIMPLE\", \"tooltip\": \"Weather\"}"
+    else
+        echo '{"text": "", "tooltip": "Weather unavailable"}'
+    fi
+    exit 0
+fi
+
+# Parse JSON - capture all at once to avoid broken pipes
+read -r TEMP FEELS HUMIDITY CONDITION WIND LOCATION TOMORROW_HIGH TOMORROW_LOW TOMORROW_COND < <(jq -r '[
+    .current_condition[0].temp_C // "",
+    .current_condition[0].FeelsLikeC // "",
+    .current_condition[0].humidity // "",
+    .current_condition[0].weatherDesc[0].value // "",
+    .current_condition[0].windspeedKmph // "",
+    .nearest_area[0].areaName[0].value // "",
+    .weather[1].maxtempC // "",
+    .weather[1].mintempC // "",
+    .weather[1].hourly[4].weatherDesc[0].value // ""
+] | @tsv' <<< "$WEATHER_DATA" 2>/dev/null)
+
+if [ -z "$TEMP" ]; then
+    echo '{"text": "", "tooltip": "Weather unavailable"}'
+    exit 0
+fi
+
+ICON=$(get_icon "$CONDITION")
+
+TEXT="$ICON ${TEMP}"
+
+# Build tooltip
+TOOLTIP="$LOCATION\n\nNow: $CONDITION\nTemperature: ${TEMP}C (feels ${FEELS}C)\nHumidity: ${HUMIDITY}%\nWind: ${WIND} km/h"
+
+if [ -n "$TOMORROW_HIGH" ]; then
+    TOOLTIP="$TOOLTIP\n\nTomorrow: ${TOMORROW_LOW}-${TOMORROW_HIGH}C\n$TOMORROW_COND"
+fi
+
+echo "{\"text\": \"$TEXT\", \"tooltip\": \"$TOOLTIP\"}"

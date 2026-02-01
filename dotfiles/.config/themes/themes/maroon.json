@@ -1,0 +1,22 @@
+{
+  "name": "maroon",
+  "display_name": "Burgundy Glass",
+  "colors": {
+    "bg_dark": "#171717",
+    "bg": "#252525",
+    "bg_light": "#373737",
+    "primary_darkest": "#2e0000",
+    "primary_dark": "#3e0000",
+    "primary": "#8b5555",
+    "primary_light": "#c59999",
+    "accent": "#a87070",
+    "text_bright": "#F5F5F5",
+    "text": "#E5E5E5",
+    "text_muted": "#A3A3A3",
+    "text_dim": "#525252",
+    "border": "#404040",
+    "danger": "#991B1B",
+    "warning": "#F59E0B",
+    "success": "#22C55E"
+  }
+}

@@ -1,0 +1,20 @@
+#!/bin/bash
+# Toggle waybar between normal and autohide modes
+
+MODE_FILE="$HOME/.config/waybar/.mode"
+
+# Kill existing waybar instances
+pkill waybar
+pkill -f waybar-autohide
+
+sleep 0.3
+
+if [ -f "$MODE_FILE" ] && grep -q "autohide" "$MODE_FILE"; then
+    # Switch to normal
+    echo "normal" > "$MODE_FILE"
+    waybar &>/dev/null & disown
+else
+    # Switch to autohide
+    echo "autohide" > "$MODE_FILE"
+    ~/.local/bin/waybar-autohide &>/dev/null & disown
+fi

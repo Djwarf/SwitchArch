@@ -1,0 +1,6 @@
+[Unit]
+Description=Home directory backup
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/backup-home

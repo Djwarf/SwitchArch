@@ -1,0 +1,12 @@
+#!/bin/bash
+# Play/pause button with state-aware icon
+
+STATUS=$(playerctl status 2>/dev/null)
+
+if [ "$STATUS" = "Playing" ]; then
+    echo '{"text": "", "tooltip": "Pause", "class": "playing"}'
+elif [ "$STATUS" = "Paused" ]; then
+    echo '{"text": "", "tooltip": "Play", "class": "paused"}'
+else
+    echo '{"text": "", "tooltip": ""}'
+fi

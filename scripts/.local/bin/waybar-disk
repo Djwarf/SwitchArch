@@ -1,0 +1,29 @@
+#!/bin/bash
+# Disk usage module for waybar
+
+# Get root partition usage
+ROOT_USAGE=$(df -h / | awk 'NR==2 {print $5}' | tr -d '%')
+ROOT_USED=$(df -h / | awk 'NR==2 {print $3}')
+ROOT_TOTAL=$(df -h / | awk 'NR==2 {print $2}')
+
+# Get home partition if separate
+HOME_LINE=$(df -h /home 2>/dev/null | awk 'NR==2')
+if [ -n "$HOME_LINE" ] && [ "$(echo "$HOME_LINE" | awk '{print $1}')" != "$(df -h / | awk 'NR==2 {print $1}')" ]; then
+    HOME_USAGE=$(echo "$HOME_LINE" | awk '{print $5}' | tr -d '%')
+    HOME_USED=$(echo "$HOME_LINE" | awk '{print $3}')
+    HOME_TOTAL=$(echo "$HOME_LINE" | awk '{print $2}')
+    TOOLTIP="Root: ${ROOT_USED}/${ROOT_TOTAL} (${ROOT_USAGE}%)\nHome: ${HOME_USED}/${HOME_TOTAL} (${HOME_USAGE}%)"
+else
+    TOOLTIP="Root: ${ROOT_USED}/${ROOT_TOTAL} (${ROOT_USAGE}%)"
+fi
+
+# Determine class
+if [ "$ROOT_USAGE" -ge 90 ]; then
+    CLASS="critical"
+elif [ "$ROOT_USAGE" -ge 75 ]; then
+    CLASS="warning"
+else
+    CLASS="normal"
+fi
+
+echo "{\"text\": \"${ROOT_USAGE}%\", \"tooltip\": \"$TOOLTIP\", \"class\": \"$CLASS\"}"

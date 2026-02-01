@@ -1,0 +1,23 @@
+#!/bin/bash
+# CPU Temperature module for waybar
+
+# Get CPU temp from k10temp (AMD) or coretemp (Intel)
+TEMP=$(sensors 2>/dev/null | grep -E "Tctl|Core 0" | head -1 | grep -oP '\+\K[0-9.]+')
+
+if [ -z "$TEMP" ]; then
+    echo '{"text": "N/A", "tooltip": "CPU temperature unavailable", "class": "unavailable"}'
+    exit 0
+fi
+
+TEMP_INT=${TEMP%.*}
+
+# Determine class based on temperature
+if [ "$TEMP_INT" -ge 85 ]; then
+    CLASS="critical"
+elif [ "$TEMP_INT" -ge 70 ]; then
+    CLASS="warning"
+else
+    CLASS="normal"
+fi
+
+echo "{\"text\": \"${TEMP_INT}\", \"tooltip\": \"CPU Temperature: ${TEMP}C\", \"class\": \"$CLASS\"}"

@@ -1,0 +1,65 @@
+/* Wofi Dark Theme - Brand Guide - Glassmorphism */
+
+window {
+    background-color: rgba({{BG_LIGHT_RGB}}, 0.6);
+    border-radius: 12px;
+    border: 1px solid rgba({{PRIMARY_RGB}}, 0.4);
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+#input {
+    background-color: rgba({{BG_DARK_RGB}}, 0.5);
+    color: {{TEXT}};
+    border: 1px solid rgba({{BORDER_RGB}}, 0.4);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    padding: 12px;
+    margin: 10px;
+    font-size: 14px;
+}
+
+#input:focus {
+    border-color: rgba({{PRIMARY_RGB}}, 0.6);
+    border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+#outer-box {
+    margin: 5px;
+}
+
+#scroll {
+    margin: 0 10px 10px 10px;
+}
+
+#inner-box {
+    background-color: transparent;
+}
+
+#entry {
+    padding: 10px;
+    border-radius: 8px;
+    color: {{TEXT}};
+}
+
+#entry:selected {
+    background-color: rgba({{PRIMARY_DARKEST_RGB}}, 0.8);
+    color: {{TEXT_BRIGHT}};
+    border: 1px solid rgba({{PRIMARY_RGB}}, 0.3);
+}
+
+#entry:hover {
+    background-color: rgba({{PRIMARY_DARK_RGB}}, 0.6);
+}
+
+#text {
+    color: {{TEXT}};
+}
+
+#text:selected {
+    color: {{TEXT_BRIGHT}};
+}
+
+#img {
+    margin-right: 10px;
+}

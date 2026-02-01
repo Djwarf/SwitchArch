@@ -1,0 +1,344 @@
+/* GTK4 Theme - Brand Guide - Glassmorphism */
+
+/* Window - Glassmorphism */
+window, .background, window.background {
+    background-color: rgba(37, 37, 37, 0.75);
+    color: #E5E5E5;
+}
+
+/* Header bar - Glassmorphism */
+headerbar {
+    background-color: rgba(46, 0, 0, 0.8);
+    color: #F5F5F5;
+    border-bottom: 1px solid rgba(64, 64, 64, 0.5);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+headerbar:backdrop {
+    background-color: rgba(37, 37, 37, 0.7);
+    color: #A3A3A3;
+}
+
+headerbar button {
+    background: transparent;
+    color: #F5F5F5;
+}
+
+headerbar button:hover {
+    background-color: rgba(62, 0, 0, 0.8);
+}
+
+/* Sidebar - Glassmorphism */
+.sidebar, .navigation-sidebar {
+    background-color: rgba(23, 23, 23, 0.65);
+    border-right: 1px solid rgba(64, 64, 64, 0.5);
+}
+
+.sidebar row:selected, .navigation-sidebar row:selected {
+    background-color: rgba(46, 0, 0, 0.85);
+}
+
+.sidebar row:hover, .navigation-sidebar row:hover {
+    background-color: rgba(62, 0, 0, 0.6);
+}
+
+/* Views - Glassmorphism */
+.view, listview, gridview, columnview {
+    background-color: rgba(23, 23, 23, 0.65);
+}
+
+/* Popover/Menu - Glassmorphism */
+popover, popover.background {
+    background-color: rgba(23, 23, 23, 0.85);
+    border: 1px solid rgba(62, 0, 0, 0.5);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+/* Tooltip - Glassmorphism */
+tooltip {
+    background-color: rgba(23, 23, 23, 0.85);
+    border: 1px solid rgba(62, 0, 0, 0.5);
+    border-radius: 8px;
+}
+
+/* Dialog - Glassmorphism */
+dialog, messagedialog {
+    background-color: rgba(37, 37, 37, 0.9);
+    border: 1px solid rgba(64, 64, 64, 0.5);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+}
+
+/* Selection */
+selection {
+    background-color: rgba(139, 85, 85, 0.6);
+}
+
+/* Card widgets */
+.card {
+    background-color: rgba(37, 37, 37, 0.7);
+    border: 1px solid rgba(64, 64, 64, 0.4);
+    border-radius: 12px;
+}
+
+/* libadwaita navigation */
+.navigation-view, .content {
+    background-color: rgba(37, 37, 37, 0.75);
+}
+
+toolbarview {
+    background-color: transparent;
+}
+
+/* ===== PAVUCONTROL SPECIFIC ===== */
+
+/* Force dark background on all elements */
+window.background, box, scrolledwindow, viewport {
+    background-color: rgba(37, 37, 37, 0.92);
+}
+
+/* Volume scales */
+scale trough {
+    background-color: rgba(23, 23, 23, 0.7);
+    border: 1px solid rgba(64, 64, 64, 0.4);
+    border-radius: 6px;
+    min-height: 8px;
+}
+
+scale highlight {
+    background: linear-gradient(to right, #2e0000, #8b5555);
+    border-radius: 5px;
+}
+
+scale slider {
+    background-color: #c59999;
+    border-radius: 50%;
+    min-width: 18px;
+    min-height: 18px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+scale slider:hover {
+    background-color: #E5E5E5;
+}
+
+/* Dropdowns */
+dropdown, dropdown > button {
+    background-color: rgba(38, 38, 38, 0.9);
+    color: #E5E5E5;
+    border: 1px solid rgba(64, 64, 64, 0.5);
+    border-radius: 6px;
+}
+
+dropdown:hover, dropdown > button:hover {
+    background-color: rgba(62, 0, 0, 0.7);
+    border-color: #8b5555;
+}
+
+dropdown popover {
+    background-color: rgba(23, 23, 23, 0.95);
+}
+
+/* Spin buttons */
+spinbutton {
+    background-color: rgba(23, 23, 23, 0.8);
+    color: #E5E5E5;
+    border: 1px solid rgba(64, 64, 64, 0.5);
+    border-radius: 6px;
+}
+
+spinbutton > text {
+    background: transparent;
+}
+
+spinbutton > button {
+    background: transparent;
+    color: #8b5555;
+}
+
+spinbutton > button:hover {
+    color: #c59999;
+    background-color: rgba(62, 0, 0, 0.5);
+}
+
+/* Buttons */
+button {
+    background-color: rgba(38, 38, 38, 0.8);
+    color: #E5E5E5;
+    border: 1px solid rgba(64, 64, 64, 0.5);
+    border-radius: 6px;
+}
+
+button:hover {
+    background-color: rgba(62, 0, 0, 0.7);
+    border-color: #8b5555;
+}
+
+button:checked, button:active {
+    background-color: rgba(46, 0, 0, 0.85);
+    border-color: #8b5555;
+}
+
+button.flat {
+    background: transparent;
+    border: none;
+}
+
+button.flat:hover {
+    background-color: rgba(62, 0, 0, 0.5);
+}
+
+/* Toggle buttons */
+togglebutton:checked {
+    background-color: rgba(46, 0, 0, 0.85);
+    border-color: #8b5555;
+}
+
+/* Check buttons */
+checkbutton check {
+    background-color: rgba(23, 23, 23, 0.7);
+    border: 1px solid rgba(64, 64, 64, 0.5);
+}
+
+checkbutton check:checked {
+    background-color: rgba(46, 0, 0, 0.85);
+    border-color: #8b5555;
+}
+
+/* Stack switcher (tabs) */
+stackswitcher > button {
+    background: rgba(23, 23, 23, 0.6);
+    color: #A3A3A3;
+    border: none;
+    border-bottom: 2px solid transparent;
+    border-radius: 0;
+}
+
+stackswitcher > button:checked {
+    background: rgba(46, 0, 0, 0.6);
+    color: #F5F5F5;
+    border-bottom: 2px solid #8b5555;
+}
+
+stackswitcher > button:hover {
+    background: rgba(62, 0, 0, 0.5);
+    color: #E5E5E5;
+}
+
+/* List boxes */
+listbox {
+    background-color: transparent;
+}
+
+listbox > row {
+    background-color: rgba(23, 23, 23, 0.5);
+    border-radius: 6px;
+    margin: 2px 4px;
+}
+
+listbox > row:hover {
+    background-color: rgba(62, 0, 0, 0.5);
+}
+
+listbox > row:selected {
+    background-color: rgba(46, 0, 0, 0.7);
+}
+
+/* Level bars (volume meters) */
+levelbar trough {
+    background-color: rgba(23, 23, 23, 0.6);
+    border-radius: 4px;
+}
+
+levelbar block.filled {
+    background: linear-gradient(to right, #2e0000, #8b5555);
+    border-radius: 3px;
+}
+
+levelbar block.empty {
+    background-color: #404040;
+    border-radius: 3px;
+}
+
+/* Labels */
+label {
+    color: #E5E5E5;
+}
+
+/* Separator */
+separator {
+    background-color: rgba(64, 64, 64, 0.5);
+}
+
+/* Notebook/tabs - full styling */
+notebook {
+    background-color: rgba(37, 37, 37, 0.92);
+}
+
+notebook > header {
+    background-color: rgba(23, 23, 23, 0.9);
+    border-bottom: 1px solid rgba(64, 64, 64, 0.5);
+}
+
+notebook > header.top {
+    background-color: rgba(23, 23, 23, 0.9);
+}
+
+notebook > header > tabs {
+    background-color: transparent;
+}
+
+notebook > header > tabs > tab {
+    background-color: transparent;
+    color: #A3A3A3;
+    padding: 8px 16px;
+    border-bottom: 2px solid transparent;
+}
+
+notebook > header > tabs > tab:checked {
+    background-color: rgba(46, 0, 0, 0.5);
+    color: #F5F5F5;
+    border-bottom: 2px solid #8b5555;
+}
+
+notebook > header > tabs > tab:hover {
+    background-color: rgba(62, 0, 0, 0.4);
+    color: #E5E5E5;
+}
+
+notebook > stack {
+    background-color: rgba(37, 37, 37, 0.92);
+}
+
+/* Tab box styling */
+tabbox, tabbox > tabbar {
+    background-color: rgba(23, 23, 23, 0.9);
+}
+
+tabbox > tabbar > tabbox {
+    background-color: rgba(23, 23, 23, 0.9);
+}
+
+tabbar > revealer > box {
+    background-color: rgba(23, 23, 23, 0.9);
+}
+
+tab {
+    background-color: transparent;
+    color: #A3A3A3;
+    border-bottom: 2px solid transparent;
+}
+
+tab:checked {
+    background-color: rgba(46, 0, 0, 0.5);
+    color: #F5F5F5;
+    border-bottom: 2px solid #8b5555;
+}
+
+tab:hover {
+    background-color: rgba(62, 0, 0, 0.4);
+    color: #E5E5E5;
+}

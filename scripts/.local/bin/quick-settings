@@ -1,0 +1,94 @@
+#!/bin/bash
+# Quick Settings Panel - Modern control panel via fuzzel
+
+# Get current states
+wifi_status=$(nmcli radio wifi)
+bt_status=$(bluetoothctl show | grep "Powered:" | awk '{print $2}')
+dnd_status=$(swaync-client -D 2>/dev/null && echo "on" || echo "off")
+volume=$(pactl get-sink-volume @DEFAULT_SINK@ | grep -oP '\d+%' | head -1)
+mute_status=$(pactl get-sink-mute @DEFAULT_SINK@ | awk '{print $2}')
+
+# Get brightness via DDC (for external monitors)
+if command -v ddcutil &>/dev/null; then
+    brightness=$(ddcutil getvcp 10 --brief 2>/dev/null | awk '{print $4}')
+    brightness_text="󰃟  Brightness ${brightness:-??}%"
+else
+    brightness_text="󰃟  Brightness (install ddcutil)"
+fi
+
+# Build menu with Nerd Font icons
+menu=""
+menu+="󰤨  WiFi $([ "$wifi_status" = "enabled" ] && echo "ON" || echo "OFF")\n"
+menu+="󰂯  Bluetooth $([ "$bt_status" = "yes" ] && echo "ON" || echo "OFF")\n"
+menu+="󰕾  Volume $volume $([ "$mute_status" = "yes" ] && echo "(Muted)" || echo "")\n"
+menu+="${brightness_text}\n"
+menu+="󰂚  Do Not Disturb $([ "$dnd_status" = "on" ] && echo "ON" || echo "OFF")\n"
+menu+="───────────────\n"
+menu+="󰒓  Audio Settings\n"
+menu+="󰛳  Network Settings\n"
+menu+="󰂱  Bluetooth Devices\n"
+menu+="󰍹  Display Settings\n"
+menu+="───────────────\n"
+menu+="󰌾  Lock Screen\n"
+menu+="󰐥  Power Menu"
+
+# Show menu
+choice=$(echo -e "$menu" | fuzzel --dmenu --prompt "󰒓 Settings: " --width 40 --lines 12)
+
+case "$choice" in
+    *"WiFi"*)
+        nmcli radio wifi $([ "$wifi_status" = "enabled" ] && echo "off" || echo "on")
+        notify-send "󰤨 WiFi" "$(nmcli radio wifi)"
+        ;;
+    *"Bluetooth ON"*|*"Bluetooth OFF"*)
+        bluetoothctl power $([ "$bt_status" = "yes" ] && echo "off" || echo "on")
+        notify-send "󰂯 Bluetooth" "$([ "$bt_status" = "yes" ] && echo "OFF" || echo "ON")"
+        ;;
+    *"Volume"*)
+        if [ "$mute_status" = "yes" ]; then
+            pactl set-sink-mute @DEFAULT_SINK@ 0
+            notify-send "󰕾 Volume" "Unmuted"
+        else
+            pactl set-sink-mute @DEFAULT_SINK@ 1
+            notify-send "󰖁 Volume" "Muted"
+        fi
+        ;;
+    *"Brightness"*)
+        if ! command -v ddcutil &>/dev/null; then
+            notify-send "󰃟 Brightness" "Install ddcutil first:\nsudo pacman -S ddcutil"
+            exit 1
+        fi
+        # Brightness submenu
+        bright_choice=$(echo -e "󰃠  100%\n󰃟  75%\n󰃞  50%\n󰃝  25%\n󰃜  10%" | fuzzel --dmenu --prompt "󰃟 Brightness: " --width 30 --lines 5)
+        case "$bright_choice" in
+            *"100%"*) ddcutil setvcp 10 100 ;;
+            *"75%"*) ddcutil setvcp 10 75 ;;
+            *"50%"*) ddcutil setvcp 10 50 ;;
+            *"25%"*) ddcutil setvcp 10 25 ;;
+            *"10%"*) ddcutil setvcp 10 10 ;;
+        esac
+        notify-send "󰃟 Brightness" "Set to $bright_choice"
+        ;;
+    *"Do Not Disturb"*)
+        swaync-client -d
+        notify-send "󰂚 Do Not Disturb" "$(swaync-client -D 2>/dev/null && echo "Enabled" || echo "Disabled")"
+        ;;
+    *"Audio Settings"*)
+        pavucontrol &
+        ;;
+    *"Network Settings"*)
+        nm-connection-editor &
+        ;;
+    *"Bluetooth Devices"*)
+        blueman-manager &
+        ;;
+    *"Display Settings"*)
+        nwg-displays &
+        ;;
+    *"Lock Screen"*)
+        hyprlock
+        ;;
+    *"Power Menu"*)
+        pkill wlogout || wlogout -p layer-shell
+        ;;
+esac

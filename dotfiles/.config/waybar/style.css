@@ -1,0 +1,504 @@
+/* Waybar Theme - Modern Glassmorphism */
+
+/* ===== GTK COLOR DEFINITIONS ===== */
+@define-color primary #8b5555;
+@define-color primary_light #c59999;
+@define-color primary_dark #3e0000;
+@define-color primary_darker #2e0000;
+@define-color accent #a87070;
+@define-color danger #991B1B;
+@define-color warning #F59E0B;
+@define-color error #EF4444;
+@define-color bg #252525;
+@define-color bg_dark #171717;
+@define-color bg_transparent rgba(55, 55, 55, 0.55);
+@define-color bg_hover rgba(62, 0, 0, 0.7);
+@define-color text #E5E5E5;
+@define-color text_bright #F5F5F5;
+@define-color text_muted #A3A3A3;
+@define-color text_dim #525252;
+@define-color border_color rgba(139, 85, 85, 0.65);
+@define-color border_subtle #404040;
+@define-color border_highlight rgba(255, 255, 255, 0);
+
+* {
+    font-family: "Crimson Text", "Font Awesome 7 Free Solid", "Font Awesome 7 Free", "JetBrainsMono Nerd Font";
+    font-size: 18px;
+    min-height: 0;
+}
+
+window#waybar {
+    background-color: @bg_transparent;
+    color: @text;
+    border-bottom: 1px solid @border_color;
+    border-top: 1px solid @border_highlight;
+}
+
+/* ===== WORKSPACES ===== */
+
+#workspaces {
+    margin-left: 12px;
+}
+
+#workspaces button {
+    padding: 4px 8px;
+    margin: 4px 2px;
+    min-width: 24px;
+    min-height: 24px;
+    background: transparent;
+    border: none;
+    border-radius: 6px;
+    color: #525252;
+    font-size: 16px;
+    transition: all 200ms ease-out;
+}
+
+#workspaces button label {
+    color: #525252;
+}
+
+#workspaces button:hover {
+    color: @primary_light;
+    background: @bg_hover;
+}
+
+#workspaces button.active {
+    color: white;
+    background: rgba(139, 85, 85, 0.3);
+}
+
+#workspaces button.active label {
+    color: white;
+}
+
+#workspaces button.urgent {
+    color: @error;
+    background: rgba(239, 68, 68, 0.2);
+}
+
+/* ===== WINDOW TITLE ===== */
+
+#window {
+    color: @text_muted;
+    padding: 4px 20px;
+    font-style: italic;
+    margin-left: 12px;
+}
+
+/* ===== CLOCK ===== */
+
+#clock {
+    color: @text;
+    font-weight: 500;
+    font-size: 18px;
+    padding: 4px 20px;
+    margin: 0 12px;
+    letter-spacing: 1px;
+}
+
+/* ===== COMMON MODULE PADDING ===== */
+
+#network, #bluetooth, #pulseaudio, #cpu, #memory, #tray {
+    padding: 4px 16px;
+    transition: all 200ms ease-out;
+}
+
+/* ===== MEDIA ===== */
+
+#custom-media {
+    color: @accent;
+    padding: 4px 18px;
+    transition: color 200ms ease-out;
+}
+
+#custom-media.playing {
+    color: @accent;
+}
+
+#custom-media.paused {
+    color: @text_dim;
+}
+
+/* Media Control Buttons */
+#custom-media-prev,
+#custom-media-play,
+#custom-media-next {
+    color: @accent;
+    padding: 4px 12px;
+    font-size: 18px;
+    transition: all 200ms ease-out;
+}
+
+#custom-media-prev:hover,
+#custom-media-play:hover,
+#custom-media-next:hover {
+    color: @primary_light;
+}
+
+#custom-media-play.playing {
+    color: @primary_light;
+}
+
+/* ===== WEATHER ===== */
+
+#custom-weather {
+    color: @primary_light;
+    padding: 4px 18px;
+    transition: all 200ms ease-out;
+}
+
+#custom-weather:hover {
+    color: @text;
+    background: @bg_hover;
+    border-radius: 6px;
+}
+
+/* ===== CALENDAR ===== */
+
+#custom-calendar {
+    color: @primary_light;
+    padding: 4px 16px;
+    transition: all 200ms ease-out;
+}
+
+#custom-calendar.has-events {
+    color: @warning;
+}
+
+#custom-calendar.error {
+    color: @error;
+}
+
+#custom-calendar:hover {
+    color: @text;
+    background: @bg_hover;
+    border-radius: 6px;
+}
+
+/* ===== NOTIFICATIONS ===== */
+
+#custom-notification {
+    color: @text_muted;
+    padding: 4px 16px;
+    font-size: 18px;
+    transition: all 200ms ease-out;
+}
+
+#custom-notification.notification {
+    color: @primary_light;
+}
+
+#custom-notification.dnd-notification,
+#custom-notification.dnd-none {
+    color: @text_dim;
+}
+
+#custom-notification:hover {
+    color: @text;
+    background: @bg_hover;
+    border-radius: 6px;
+}
+
+/* ===== HARDWARE MONITORING ===== */
+
+#custom-cpu-temp,
+#custom-gpu-temp,
+#custom-disk,
+#custom-net-speed {
+    color: @text_muted;
+    padding: 4px 12px;
+    transition: color 200ms ease-out;
+}
+
+#custom-cpu-temp.warning,
+#custom-gpu-temp.warning,
+#custom-disk.warning {
+    color: @warning;
+}
+
+#custom-cpu-temp.critical,
+#custom-gpu-temp.critical,
+#custom-disk.critical {
+    color: @error;
+}
+
+#custom-net-speed {
+    color: @accent;
+    font-size: 14px;
+    min-width: 90px;
+}
+
+/* ===== UPDATES ===== */
+
+#custom-updates {
+    color: @text_muted;
+    padding: 4px 16px;
+    transition: all 200ms ease-out;
+}
+
+#custom-updates.has-updates {
+    color: @warning;
+}
+
+/* ===== SUNSHINE ===== */
+
+#custom-sunshine {
+    padding: 4px 16px;
+    transition: all 200ms ease-out;
+}
+
+#custom-sunshine.active {
+    color: @warning;
+}
+
+#custom-sunshine.inactive {
+    color: @text_dim;
+}
+
+/* ===== SETTINGS ===== */
+
+#custom-settings {
+    color: @primary;
+    padding: 4px 16px;
+    font-size: 20px;
+    transition: all 200ms ease-out;
+}
+
+#custom-settings:hover {
+    color: @primary_light;
+    background: @bg_hover;
+    border-radius: 6px;
+}
+
+/* ===== NETWORK ===== */
+
+#network {
+    color: @text_muted;
+}
+
+#network.wifi {
+    color: @accent;
+}
+
+#network.disconnected {
+    color: @text_dim;
+}
+
+#network:hover {
+    background: @bg_hover;
+    border-radius: 6px;
+}
+
+/* ===== BLUETOOTH ===== */
+
+#bluetooth {
+    color: @text_muted;
+}
+
+#bluetooth.connected {
+    color: @accent;
+}
+
+#bluetooth:hover {
+    background: @bg_hover;
+    border-radius: 6px;
+}
+
+/* ===== AUDIO ===== */
+
+#pulseaudio {
+    color: @text_muted;
+}
+
+#pulseaudio.muted {
+    color: @text_dim;
+}
+
+#pulseaudio:hover {
+    background: @bg_hover;
+    border-radius: 6px;
+}
+
+/* ===== SYSTEM MONITORS ===== */
+
+#cpu {
+    color: @text_muted;
+}
+
+#memory {
+    color: @text_muted;
+}
+
+/* ===== TRAY ===== */
+
+#tray {
+    color: @text_muted;
+    padding: 4px 12px;
+}
+
+#tray > .passive {
+    -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+    -gtk-icon-effect: highlight;
+    background-color: @primary_dark;
+}
+
+/* ===== TOOLTIP ===== */
+
+tooltip {
+    background-color: rgba(23, 23, 23, 0.85);
+    border: 1px solid rgba(62, 0, 0, 0.5);
+    border-top: 1px solid @border_highlight;
+    border-radius: 10px;
+    padding: 8px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+tooltip label {
+    color: @text;
+    padding: 4px;
+}
+
+/* ===== LEFT SIDE ===== */
+
+/* App Launcher Button */
+#custom-launcher {
+    color: @primary;
+    padding: 4px 18px;
+    font-size: 24px;
+    transition: all 200ms ease-out;
+}
+
+#custom-launcher:hover {
+    color: @primary_light;
+    border-radius: 6px;
+}
+
+/* Toggle Buttons */
+#custom-size-toggle,
+#custom-hide-bar {
+    color: @text_dim;
+    padding: 4px 10px;
+    font-size: 14px;
+    transition: color 200ms ease-out;
+}
+
+#custom-size-toggle:hover,
+#custom-hide-bar:hover {
+    color: @text_muted;
+}
+
+/* ===== RIGHT SIDE - ACTION BUTTONS ===== */
+
+/* Screenshot */
+#custom-screenshot {
+    color: @text_muted;
+    padding: 4px 16px;
+    font-size: 20px;
+    transition: all 200ms ease-out;
+}
+
+#custom-screenshot:hover {
+    color: @text;
+    background: @bg_hover;
+    border-radius: 6px;
+}
+
+/* Clipboard */
+#custom-clipboard {
+    color: @text_muted;
+    padding: 4px 16px;
+    font-size: 20px;
+    transition: all 200ms ease-out;
+}
+
+#custom-clipboard:hover {
+    color: @text;
+    background: @bg_hover;
+    border-radius: 6px;
+}
+
+/* Lock Button */
+#custom-lock {
+    color: @primary;
+    padding: 4px 16px;
+    font-size: 20px;
+    transition: all 200ms ease-out;
+}
+
+#custom-lock:hover {
+    color: @primary_light;
+    background: @bg_hover;
+    border-radius: 6px;
+}
+
+/* Power Button */
+#custom-power {
+    color: @danger;
+    padding: 4px 20px;
+    font-size: 22px;
+    margin-left: 8px;
+    transition: all 200ms ease-out;
+}
+
+#custom-power:hover {
+    color: @text;
+    background: @danger;
+    border-radius: 6px;
+}
+
+/* ===== DRAWER GROUPS ===== */
+
+/* Group Icons (always visible) */
+#custom-media-icon,
+#custom-info-icon,
+#custom-hardware-icon,
+#custom-connectivity-icon,
+#custom-actions-icon {
+    color: @primary;
+    padding: 4px 14px;
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 200ms ease-out;
+}
+
+#custom-media-icon:hover,
+#custom-info-icon:hover,
+#custom-hardware-icon:hover,
+#custom-connectivity-icon:hover,
+#custom-actions-icon:hover {
+    color: @primary_light;
+}
+
+/* Group containers */
+#media,
+#info,
+#hardware,
+#connectivity,
+#actions {
+    background: transparent;
+    margin: 0;
+    padding: 0;
+}
+
+/* Ensure drawer children are visible */
+#media > *,
+#info > *,
+#hardware > *,
+#connectivity > *,
+#actions > * {
+    min-width: 40px;
+    padding: 4px 10px;
+}
+
+/* Drawer expanded state */
+#media.expanded,
+#info.expanded,
+#hardware.expanded,
+#connectivity.expanded,
+#actions.expanded {
+    padding: 0 12px;
+}

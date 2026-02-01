@@ -1,0 +1,372 @@
+#!/usr/bin/env bash
+#
+# Theme Switcher for Hyprland Desktop Environment
+# Cycles through multiple color themes with unified updates
+#
+
+set -euo pipefail
+
+THEMES_DIR="${HOME}/.config/themes"
+TEMPLATES_DIR="${THEMES_DIR}/templates"
+THEMES_JSON_DIR="${THEMES_DIR}/themes"
+CURRENT_THEME_FILE="${THEMES_DIR}/current-theme"
+
+# Theme order for cycling
+THEME_ORDER=("maroon" "ocean" "forest" "nord" "sunset")
+
+# Color codes for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+log_info() {
+    echo -e "${BLUE}[INFO]${NC} $1"
+}
+
+log_success() {
+    echo -e "${GREEN}[OK]${NC} $1"
+}
+
+log_warn() {
+    echo -e "${YELLOW}[WARN]${NC} $1"
+}
+
+log_error() {
+    echo -e "${RED}[ERROR]${NC} $1" >&2
+}
+
+# Get current theme name
+get_current_theme() {
+    if [[ -f "$CURRENT_THEME_FILE" ]]; then
+        cat "$CURRENT_THEME_FILE"
+    else
+        echo "maroon"
+    fi
+}
+
+# Get next theme in rotation
+get_next_theme() {
+    local current="$1"
+    local len=${#THEME_ORDER[@]}
+
+    for ((i=0; i<len; i++)); do
+        if [[ "${THEME_ORDER[$i]}" == "$current" ]]; then
+            local next_idx=$(( (i + 1) % len ))
+            echo "${THEME_ORDER[$next_idx]}"
+            return
+        fi
+    done
+
+    # If current theme not found in order, return first
+    echo "${THEME_ORDER[0]}"
+}
+
+# List available themes
+list_themes() {
+    local current
+    current=$(get_current_theme)
+
+    echo "Available themes:"
+    for theme_file in "${THEMES_JSON_DIR}"/*.json; do
+        if [[ -f "$theme_file" ]]; then
+            local name display_name
+            name=$(jq -r '.name' "$theme_file")
+            display_name=$(jq -r '.display_name' "$theme_file")
+
+            if [[ "$name" == "$current" ]]; then
+                echo -e "  ${GREEN}* $name${NC} - $display_name (current)"
+            else
+                echo "    $name - $display_name"
+            fi
+        fi
+    done
+}
+
+# Convert hex to RGB components (for rgba() values)
+hex_to_rgb() {
+    local hex="${1#\#}"
+    local r=$((16#${hex:0:2}))
+    local g=$((16#${hex:2:2}))
+    local b=$((16#${hex:4:2}))
+    echo "$r, $g, $b"
+}
+
+# Process a template file with color substitutions
+process_template() {
+    local template="$1"
+    local output="$2"
+    local theme_json="$3"
+
+    if [[ ! -f "$template" ]]; then
+        log_warn "Template not found: $template"
+        return 1
+    fi
+
+    # Read all colors from theme JSON
+    local bg_dark bg bg_light primary_darkest primary_dark primary primary_light
+    local accent text_bright text text_muted text_dim border danger warning success
+    local theme_name display_name
+
+    theme_name=$(jq -r '.name' "$theme_json")
+    display_name=$(jq -r '.display_name' "$theme_json")
+    bg_dark=$(jq -r '.colors.bg_dark' "$theme_json")
+    bg=$(jq -r '.colors.bg' "$theme_json")
+    bg_light=$(jq -r '.colors.bg_light' "$theme_json")
+    primary_darkest=$(jq -r '.colors.primary_darkest' "$theme_json")
+    primary_dark=$(jq -r '.colors.primary_dark' "$theme_json")
+    primary=$(jq -r '.colors.primary' "$theme_json")
+    primary_light=$(jq -r '.colors.primary_light' "$theme_json")
+    accent=$(jq -r '.colors.accent' "$theme_json")
+    text_bright=$(jq -r '.colors.text_bright' "$theme_json")
+    text=$(jq -r '.colors.text' "$theme_json")
+    text_muted=$(jq -r '.colors.text_muted' "$theme_json")
+    text_dim=$(jq -r '.colors.text_dim' "$theme_json")
+    border=$(jq -r '.colors.border' "$theme_json")
+    danger=$(jq -r '.colors.danger' "$theme_json")
+    warning=$(jq -r '.colors.warning' "$theme_json")
+    success=$(jq -r '.colors.success' "$theme_json")
+
+    # Create RGB versions for rgba() usage
+    local bg_dark_rgb bg_rgb bg_light_rgb primary_darkest_rgb primary_dark_rgb
+    local primary_rgb primary_light_rgb accent_rgb border_rgb
+
+    bg_dark_rgb=$(hex_to_rgb "$bg_dark")
+    bg_rgb=$(hex_to_rgb "$bg")
+    bg_light_rgb=$(hex_to_rgb "$bg_light")
+    primary_darkest_rgb=$(hex_to_rgb "$primary_darkest")
+    primary_dark_rgb=$(hex_to_rgb "$primary_dark")
+    primary_rgb=$(hex_to_rgb "$primary")
+    primary_light_rgb=$(hex_to_rgb "$primary_light")
+    accent_rgb=$(hex_to_rgb "$accent")
+    border_rgb=$(hex_to_rgb "$border")
+
+    # No-hash versions for formats that need bare hex
+    local bg_nohash text_nohash text_bright_nohash text_muted_nohash
+    local primary_nohash primary_dark_nohash danger_nohash border_nohash
+
+    bg_nohash="${bg#\#}"
+    text_nohash="${text#\#}"
+    text_bright_nohash="${text_bright#\#}"
+    text_muted_nohash="${text_muted#\#}"
+    primary_nohash="${primary#\#}"
+    primary_dark_nohash="${primary_dark#\#}"
+    danger_nohash="${danger#\#}"
+    border_nohash="${border#\#}"
+
+    # Perform substitutions
+    sed -e "s|{{THEME_NAME}}|$theme_name|g" \
+        -e "s|{{DISPLAY_NAME}}|$display_name|g" \
+        -e "s|{{BG_DARK}}|$bg_dark|g" \
+        -e "s|{{BG}}|$bg|g" \
+        -e "s|{{BG_LIGHT}}|$bg_light|g" \
+        -e "s|{{PRIMARY_DARKEST}}|$primary_darkest|g" \
+        -e "s|{{PRIMARY_DARK}}|$primary_dark|g" \
+        -e "s|{{PRIMARY}}|$primary|g" \
+        -e "s|{{PRIMARY_LIGHT}}|$primary_light|g" \
+        -e "s|{{ACCENT}}|$accent|g" \
+        -e "s|{{TEXT_BRIGHT}}|$text_bright|g" \
+        -e "s|{{TEXT}}|$text|g" \
+        -e "s|{{TEXT_MUTED}}|$text_muted|g" \
+        -e "s|{{TEXT_DIM}}|$text_dim|g" \
+        -e "s|{{BORDER}}|$border|g" \
+        -e "s|{{DANGER}}|$danger|g" \
+        -e "s|{{WARNING}}|$warning|g" \
+        -e "s|{{SUCCESS}}|$success|g" \
+        -e "s|{{BG_DARK_RGB}}|$bg_dark_rgb|g" \
+        -e "s|{{BG_RGB}}|$bg_rgb|g" \
+        -e "s|{{BG_LIGHT_RGB}}|$bg_light_rgb|g" \
+        -e "s|{{PRIMARY_DARKEST_RGB}}|$primary_darkest_rgb|g" \
+        -e "s|{{PRIMARY_DARK_RGB}}|$primary_dark_rgb|g" \
+        -e "s|{{PRIMARY_RGB}}|$primary_rgb|g" \
+        -e "s|{{PRIMARY_LIGHT_RGB}}|$primary_light_rgb|g" \
+        -e "s|{{ACCENT_RGB}}|$accent_rgb|g" \
+        -e "s|{{BORDER_RGB}}|$border_rgb|g" \
+        -e "s|{{BG_NOHASH}}|$bg_nohash|g" \
+        -e "s|{{TEXT_NOHASH}}|$text_nohash|g" \
+        -e "s|{{TEXT_BRIGHT_NOHASH}}|$text_bright_nohash|g" \
+        -e "s|{{TEXT_MUTED_NOHASH}}|$text_muted_nohash|g" \
+        -e "s|{{PRIMARY_NOHASH}}|$primary_nohash|g" \
+        -e "s|{{PRIMARY_DARK_NOHASH}}|$primary_dark_nohash|g" \
+        -e "s|{{DANGER_NOHASH}}|$danger_nohash|g" \
+        -e "s|{{BORDER_NOHASH}}|$border_nohash|g" \
+        "$template" > "$output"
+}
+
+# Reload applications (runs in parallel for speed)
+reload_apps() {
+    # Run all reloads in parallel as background jobs
+    {
+        # Hyprland
+        command -v hyprctl &>/dev/null && hyprctl reload &>/dev/null
+
+        # Waybar
+        pgrep -x waybar &>/dev/null && killall -SIGUSR2 waybar 2>/dev/null
+
+        # SwayNC
+        command -v swaync-client &>/dev/null && pgrep -x swaync &>/dev/null && \
+            swaync-client --reload-css &>/dev/null
+
+        # Dunst - restart
+        if pgrep -x dunst &>/dev/null; then
+            killall dunst 2>/dev/null
+            dunst &>/dev/null &
+        fi
+
+        # Kitty - live reload if remote control is enabled
+        if command -v kitty &>/dev/null; then
+            for socket in /tmp/kitty-*; do
+                [[ -S "$socket" ]] && kitty @ --to "unix:$socket" set-colors --all --configured ~/.config/kitty/kitty.conf 2>/dev/null
+            done
+            kitty @ set-colors --all --configured ~/.config/kitty/kitty.conf 2>/dev/null
+        fi
+    } &
+    disown
+}
+
+# Apply a theme
+apply_theme() {
+    local theme_name="$1"
+    local theme_json="${THEMES_JSON_DIR}/${theme_name}.json"
+
+    if [[ ! -f "$theme_json" ]]; then
+        log_error "Theme not found: $theme_name"
+        log_info "Available themes:"
+        list_themes
+        return 1
+    fi
+
+    local display_name
+    display_name=$(jq -r '.display_name' "$theme_json")
+
+    log_info "Applying theme: $display_name ($theme_name)"
+
+    # Process all templates
+    local templates=(
+        "hyprland-colors.tmpl:${HOME}/.config/hypr/hyprland.conf.d/04-look-and-feel.conf"
+        "hyprlock-colors.tmpl:${HOME}/.config/hypr/hyprlock.conf"
+        "kitty-colors.tmpl:${HOME}/.config/kitty/kitty.conf"
+        "waybar-colors.tmpl:${HOME}/.config/waybar/style.css"
+        "swaync-colors.tmpl:${HOME}/.config/swaync/style.css"
+        "fuzzel-colors.tmpl:${HOME}/.config/fuzzel/fuzzel.ini"
+        "wofi-colors.tmpl:${HOME}/.config/wofi/style.css"
+        "swayosd-colors.tmpl:${HOME}/.config/swayosd/style.css"
+        "wlogout-colors.tmpl:${HOME}/.config/wlogout/style.css"
+        "dunst-colors.tmpl:${HOME}/.config/dunst/dunstrc"
+        "btop-colors.tmpl:${HOME}/.config/btop/themes/current.theme"
+        "gtk3-colors.tmpl:${HOME}/.config/gtk-3.0/colors.css"
+        "gtk4-colors.tmpl:${HOME}/.config/gtk-4.0/colors.css"
+        "nwg-drawer-colors.tmpl:${HOME}/.config/nwg-drawer/drawer.css"
+        "nwg-dock-colors.tmpl:${HOME}/.config/nwg-dock-hyprland/style.css"
+    )
+
+    for mapping in "${templates[@]}"; do
+        local template_name="${mapping%%:*}"
+        local output_path="${mapping#*:}"
+        local template_path="${TEMPLATES_DIR}/${template_name}"
+
+        # Ensure output directory exists
+        mkdir -p "$(dirname "$output_path")"
+
+        if process_template "$template_path" "$output_path" "$theme_json"; then
+            log_success "Generated: $(basename "$output_path")"
+        else
+            log_warn "Skipped: $(basename "$output_path")"
+        fi
+    done
+
+    # Save current theme
+    echo "$theme_name" > "$CURRENT_THEME_FILE"
+
+    # Send notification immediately (non-blocking)
+    command -v notify-send &>/dev/null && \
+        notify-send -t 2000 -i preferences-desktop-theme "Theme: $display_name" &
+
+    # Reload applications (runs in background)
+    reload_apps
+
+    log_success "Theme '$display_name' applied!"
+}
+
+# Toggle to next theme
+toggle_theme() {
+    local current next
+    current=$(get_current_theme)
+    next=$(get_next_theme "$current")
+
+    log_info "Cycling from '$current' to '$next'"
+    apply_theme "$next"
+}
+
+# Show usage
+usage() {
+    cat <<EOF
+Theme Switcher for Hyprland Desktop Environment
+
+Usage: $(basename "$0") <command> [options]
+
+Commands:
+    toggle              Cycle to the next theme
+    set <name>          Apply a specific theme
+    list                List available themes
+    current             Show current theme
+    help                Show this help message
+
+Examples:
+    $(basename "$0") toggle          # Cycle to next theme
+    $(basename "$0") set ocean       # Apply the ocean theme
+    $(basename "$0") list            # Show all themes
+
+Theme order: ${THEME_ORDER[*]}
+EOF
+}
+
+# Main
+main() {
+    # Check dependencies
+    if ! command -v jq &>/dev/null; then
+        log_error "jq is required but not installed. Install with: sudo pacman -S jq"
+        exit 1
+    fi
+
+    local command="${1:-help}"
+
+    case "$command" in
+        toggle)
+            toggle_theme
+            ;;
+        set)
+            if [[ -z "${2:-}" ]]; then
+                log_error "Theme name required"
+                usage
+                exit 1
+            fi
+            apply_theme "$2"
+            ;;
+        list)
+            list_themes
+            ;;
+        current)
+            local current display_name theme_json
+            current=$(get_current_theme)
+            theme_json="${THEMES_JSON_DIR}/${current}.json"
+            if [[ -f "$theme_json" ]]; then
+                display_name=$(jq -r '.display_name' "$theme_json")
+                echo "$current ($display_name)"
+            else
+                echo "$current"
+            fi
+            ;;
+        help|--help|-h)
+            usage
+            ;;
+        *)
+            log_error "Unknown command: $command"
+            usage
+            exit 1
+            ;;
+    esac
+}
+
+main "$@"

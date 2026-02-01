@@ -1,0 +1,22 @@
+#!/bin/bash
+# GPU Temperature module for waybar (NVIDIA)
+
+TEMP=$(nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader 2>/dev/null)
+
+if [ -z "$TEMP" ]; then
+    echo '{"text": "", "tooltip": "", "class": "unavailable"}'
+    exit 0
+fi
+
+# Determine class based on temperature
+if [ "$TEMP" -ge 80 ]; then
+    CLASS="critical"
+elif [ "$TEMP" -ge 65 ]; then
+    CLASS="warning"
+else
+    CLASS="normal"
+fi
+
+GPU_NAME=$(nvidia-smi --query-gpu=name --format=csv,noheader 2>/dev/null)
+
+echo "{\"text\": \"${TEMP}\", \"tooltip\": \"GPU: ${GPU_NAME}\nTemperature: ${TEMP}C\", \"class\": \"$CLASS\"}"

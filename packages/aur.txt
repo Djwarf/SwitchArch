@@ -1,0 +1,26 @@
+# SwitchArch - AUR Packages
+# Packages from the Arch User Repository
+# Install with: yay -S --needed - < aur.txt
+# Or: paru -S --needed - < aur.txt
+
+# Browser
+brave-bin
+
+# Office suite
+onlyoffice-bin
+
+# Game streaming (optional)
+sunshine
+
+# Power/logout menu
+wlogout
+
+# Xbox controller support (optional - for gaming)
+xpadneo-dkms
+
+# Custom calculator apps (your personal projects)
+# switchcal
+# switchcalc
+
+# AUR helper (install yay manually first if not present)
+# yay

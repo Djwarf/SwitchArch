@@ -1,0 +1,22 @@
+{
+  "name": "sunset",
+  "display_name": "Golden Sunset",
+  "colors": {
+    "bg_dark": "#1a1510",
+    "bg": "#292019",
+    "bg_light": "#3d3024",
+    "primary_darkest": "#92400e",
+    "primary_dark": "#b45309",
+    "primary": "#d97706",
+    "primary_light": "#fbbf24",
+    "accent": "#f59e0b",
+    "text_bright": "#FEF9F5",
+    "text": "#F5E6D3",
+    "text_muted": "#B8A08A",
+    "text_dim": "#6B5B4F",
+    "border": "#4a3f34",
+    "danger": "#dc2626",
+    "warning": "#ea580c",
+    "success": "#65a30d"
+  }
+}

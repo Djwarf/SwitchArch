@@ -1,0 +1,22 @@
+{
+  "name": "ocean",
+  "display_name": "Deep Ocean",
+  "colors": {
+    "bg_dark": "#0d1117",
+    "bg": "#161b22",
+    "bg_light": "#21262d",
+    "primary_darkest": "#003366",
+    "primary_dark": "#004488",
+    "primary": "#0077b6",
+    "primary_light": "#90caf9",
+    "accent": "#4fc3f7",
+    "text_bright": "#F5F5F5",
+    "text": "#E5E5E5",
+    "text_muted": "#A3A3A3",
+    "text_dim": "#525252",
+    "border": "#30363d",
+    "danger": "#f85149",
+    "warning": "#d29922",
+    "success": "#3fb950"
+  }
+}

@@ -1,0 +1,55 @@
+#!/bin/bash
+# Keybind Help - Shows all keybinds in fuzzel
+
+cat << 'EOF' | fuzzel --dmenu --prompt "Keybinds: " --width 70 --lines 40
+--- Core ---
+Super + T            Terminal (Kitty)
+Super + A            App Drawer (nwg-drawer)
+Super + F            File Manager (Thunar)
+Super + K            Kill Window
+Super + Q            Exit Hyprland
+Super + V            Toggle Floating
+Super + L            Lock Screen
+Super + H            Show Keybinds
+Super + B            Browser (Brave)
+Super + Shift+P      Pseudo Tile
+Super + J            Toggle Split
+Super + Z            Pin Window (floats + pins)
+--- Fullscreen ---
+Super + M            True Fullscreen (no gaps)
+Super + Shift+M      Fullscreen (with gaps/bar)
+--- Workspaces ---
+Super + 1-0          Switch Workspace
+Super + Shift+1-0    Move Window to Workspace
+Super + S            Special Workspace
+Super + Shift+S      Move to Special
+Super + Scroll       Cycle Workspaces
+--- Window Management ---
+Super + Arrows       Move Focus
+Super + Ctrl+Arrows  Swap Window
+Super + Shift+Alt+Arrows  Move Workspace to Monitor
+Super + Mouse LMB    Move Window
+Super + Mouse RMB    Resize Window
+Super + Alt+R        Resize Mode (arrows/hjkl, Esc to exit)
+--- Screenshots ---
+Super + P            Region screenshot (save)
+Super + Alt+P        Region screenshot (clipboard)
+Super + Ctrl+P       Full screen (save)
+Super + Ctrl+Alt+P   Full screen (clipboard)
+--- UX ---
+Super + C            Clipboard history
+Super + X            Power menu
+Super + Y            Toggle waybar
+--- Media Keys ---
+XF86 Volume          Raise/Lower/Mute
+XF86 Brightness      Raise/Lower
+XF86 Audio           Play/Pause/Next/Prev
+--- Waybar Clicks ---
+Workspaces           Click to switch (scroll: cycle)
+Media icon           Play/Pause (scroll: next/prev)
+Weather              Current weather
+Updates              Click to update system
+Sunshine             Click to start streaming
+Settings gear        Quick settings menu
+Network/BT/Sound     Click to open settings
+EOF

@@ -1,0 +1,75 @@
+#!/bin/bash
+# Enhanced media module with progress indicator
+
+STATUS=$(playerctl status 2>/dev/null)
+
+if [ "$STATUS" = "Playing" ] || [ "$STATUS" = "Paused" ]; then
+    ARTIST=$(playerctl metadata artist 2>/dev/null)
+    TITLE=$(playerctl metadata title 2>/dev/null)
+    POSITION=$(playerctl position 2>/dev/null | cut -d. -f1)
+    LENGTH=$(playerctl metadata mpris:length 2>/dev/null)
+
+    # Calculate progress
+    PROGRESS=""
+    TIME_FMT=""
+    if [ -n "$LENGTH" ] && [ "$LENGTH" -gt 0 ] 2>/dev/null; then
+        LENGTH_SEC=$((LENGTH / 1000000))
+        if [ "$LENGTH_SEC" -gt 0 ] && [ -n "$POSITION" ]; then
+            PERCENT=$((POSITION * 100 / LENGTH_SEC))
+            # Create progress bar (5 chars)
+            FILLED=$((PERCENT / 20))
+            for i in 1 2 3 4 5; do
+                if [ $i -le $FILLED ]; then
+                    PROGRESS+=""
+                else
+                    PROGRESS+=""
+                fi
+            done
+
+            # Format time
+            POS_MIN=$((POSITION / 60))
+            POS_SEC=$((POSITION % 60))
+            LEN_MIN=$((LENGTH_SEC / 60))
+            LEN_SEC=$((LENGTH_SEC % 60))
+            TIME_FMT=$(printf "%d:%02d/%d:%02d" $POS_MIN $POS_SEC $LEN_MIN $LEN_SEC)
+        fi
+    fi
+
+    # Status icon
+    if [ "$STATUS" = "Playing" ]; then
+        ICON=""
+        CLASS="playing"
+    else
+        ICON=""
+        CLASS="paused"
+    fi
+
+    # Truncate text
+    if [ -n "$ARTIST" ] && [ -n "$TITLE" ]; then
+        DISPLAY="$ARTIST - $TITLE"
+    elif [ -n "$TITLE" ]; then
+        DISPLAY="$TITLE"
+    else
+        DISPLAY="Unknown"
+    fi
+
+    if [ ${#DISPLAY} -gt 25 ]; then
+        DISPLAY="${DISPLAY:0:22}..."
+    fi
+
+    if [ -n "$PROGRESS" ]; then
+        TEXT="$ICON $DISPLAY $PROGRESS"
+    else
+        TEXT="$ICON $DISPLAY"
+    fi
+
+    if [ -n "$TIME_FMT" ]; then
+        TOOLTIP="$ARTIST - $TITLE\n$TIME_FMT\nStatus: $STATUS"
+    else
+        TOOLTIP="$ARTIST - $TITLE\nStatus: $STATUS"
+    fi
+
+    echo "{\"text\": \"$TEXT\", \"tooltip\": \"$TOOLTIP\", \"class\": \"$CLASS\"}"
+else
+    echo '{"text": "", "tooltip": "", "class": "stopped"}'
+fi

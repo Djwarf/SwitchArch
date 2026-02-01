@@ -1,0 +1,39 @@
+#!/bin/bash
+# Calendar events module for waybar using khal
+
+# Check if khal is installed
+if ! command -v khal &> /dev/null; then
+    echo '{"text": "", "tooltip": "khal not installed"}'
+    exit 0
+fi
+
+# Get today's events
+TODAY_EVENTS=$(khal list today today --format "{title}" 2>/dev/null | head -5)
+# Get next event
+NEXT_EVENT=$(khal list now 7d --format "{start-time} {title}" 2>/dev/null | head -1)
+
+if [ -z "$NEXT_EVENT" ] && [ -z "$TODAY_EVENTS" ]; then
+    echo '{"text": "", "tooltip": "No upcoming events"}'
+    exit 0
+fi
+
+# Count today's events
+EVENT_COUNT=$(echo "$TODAY_EVENTS" | grep -c . 2>/dev/null || echo 0)
+
+if [ "$EVENT_COUNT" -gt 0 ]; then
+    TEXT="$EVENT_COUNT"
+
+    # Build tooltip
+    TOOLTIP="Today's Events:\n"
+    while IFS= read -r event; do
+        [ -n "$event" ] && TOOLTIP+="  $event\n"
+    done <<< "$TODAY_EVENTS"
+else
+    TEXT=""
+    TOOLTIP="Next: $NEXT_EVENT"
+fi
+
+# Remove trailing newline from tooltip
+TOOLTIP="${TOOLTIP%\\n}"
+
+echo "{\"text\": \"$TEXT\", \"tooltip\": \"$TOOLTIP\"}"

@@ -1,0 +1,38 @@
+# SwitchArch - Applications
+# User applications and desktop software
+# Install with: pacman -S --needed - < apps.txt
+
+# Terminal emulator
+kitty
+
+# File manager
+thunar
+thunar-archive-plugin
+thunar-volman
+tumbler
+
+# Web browser (AUR alternative: brave-bin)
+# Install your preferred browser
+
+# Audio
+pipewire-pulse
+pavucontrol
+
+# Bluetooth
+blueman
+bluez-utils
+
+# Media
+mpv
+
+# System info
+fastfetch
+
+# Gaming (optional - comment out if not needed)
+steam
+
+# NVIDIA drivers (comment out for AMD/Intel)
+cuda
+nvidia-open
+nvidia-settings
+nvidia-utils

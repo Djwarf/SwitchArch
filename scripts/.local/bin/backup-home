@@ -1,0 +1,36 @@
+#!/bin/bash
+# Backup home directory using borg
+# Configure these paths for your setup:
+REPO="${BORG_REPO:-/path/to/your/backups/borg}"
+LOG="${BACKUP_LOG:-$HOME/.local/share/backup.log}"
+
+export BORG_PASSPHRASE="$(cat ~/.config/borg/passphrase 2>/dev/null)"
+
+if [ -z "$BORG_PASSPHRASE" ]; then
+    echo "$(date '+%Y-%m-%d %H:%M:%S'): ERROR - No passphrase found" >> "$LOG"
+    exit 1
+fi
+
+# Create backup with timestamp
+borg create --stats --compression lz4 \
+    --exclude ~/.cache \
+    --exclude ~/node_modules \
+    --exclude ~/.local/share/Steam \
+    --exclude ~/Downloads \
+    --exclude ~/.local/share/Trash \
+    --exclude ~/.local/share/baloo \
+    "$REPO"::home-{now:%Y-%m-%d_%H%M%S} \
+    "$HOME"
+
+if [ $? -eq 0 ]; then
+    echo "$(date '+%Y-%m-%d %H:%M:%S'): Backup completed" >> "$LOG"
+else
+    echo "$(date '+%Y-%m-%d %H:%M:%S'): Backup FAILED" >> "$LOG"
+    exit 1
+fi
+
+# Prune old backups: keep 7 daily, 4 weekly, 6 monthly
+borg prune --keep-daily=7 --keep-weekly=4 --keep-monthly=6 "$REPO"
+
+# Free up space from deleted archives
+borg compact "$REPO"

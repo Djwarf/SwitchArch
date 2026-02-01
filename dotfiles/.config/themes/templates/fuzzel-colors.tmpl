@@ -1,0 +1,34 @@
+# Fuzzel config - Dark Glassmorphism
+
+[main]
+font=JetBrainsMono Nerd Font:size=14
+dpi-aware=auto
+prompt="❯ "
+icon-theme=Papirus-Dark
+icons-enabled=yes
+fields=name,generic,comment,categories,filename,keywords
+terminal=kitty
+layer=overlay
+lines=20
+width=60
+horizontal-pad=20
+vertical-pad=15
+inner-pad=8
+
+[colors]
+# Dark transparent background for glassmorphism
+background={{BG_NOHASH}}a6
+# Light text
+text={{TEXT_NOHASH}}ff
+# Primary accent for selection
+selection={{PRIMARY_DARK_NOHASH}}b3
+selection-text={{TEXT_BRIGHT_NOHASH}}ff
+# Match highlight in primary
+match={{PRIMARY_NOHASH}}ff
+selection-match={{TEXT_NOHASH}}ff
+# Muted border
+border={{PRIMARY_NOHASH}}80
+
+[border]
+width=1
+radius=12

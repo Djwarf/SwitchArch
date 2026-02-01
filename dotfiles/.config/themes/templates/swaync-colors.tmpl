@@ -1,0 +1,337 @@
+/* swaync theme - Modern Dark Glassmorphism */
+
+/* ===== CSS CUSTOM PROPERTIES ===== */
+@define-color primary {{PRIMARY}};
+@define-color primary-light {{PRIMARY_LIGHT}};
+@define-color primary-dark {{PRIMARY_DARK}};
+@define-color primary-darker {{PRIMARY_DARKEST}};
+@define-color danger {{DANGER}};
+@define-color warning {{WARNING}};
+@define-color error #EF4444;
+@define-color bg {{BG}};
+@define-color bg-dark {{BG_DARK}};
+@define-color bg-transparent rgba({{BG_LIGHT_RGB}}, 0.75);
+@define-color bg-hover rgba({{PRIMARY_DARK_RGB}}, 0.7);
+@define-color text {{TEXT}};
+@define-color text-muted {{TEXT_MUTED}};
+@define-color text-dim {{TEXT_DIM}};
+@define-color border rgba({{PRIMARY_RGB}}, 0.5);
+@define-color border-highlight rgba(255, 255, 255, 0.15);
+
+* {
+    font-family: "Crimson Text";
+    font-size: 14px;
+    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.notification-row {
+    outline: none;
+    margin: 4px;
+}
+
+.notification {
+    border-radius: 12px;
+    margin: 6px;
+    padding: 0;
+    background: @bg-transparent;
+    border: 1px solid rgba({{PRIMARY_DARK_RGB}}, 0.5);
+    border-top: 1px solid @border-highlight;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.notification:hover {
+    background: rgba({{BG_LIGHT_RGB}}, 0.85);
+}
+
+.notification-content {
+    padding: 12px;
+    background: transparent;
+}
+
+.notification-default-action,
+.notification-action {
+    border: none;
+    background: transparent;
+    border-radius: 8px;
+}
+
+.notification-default-action:hover,
+.notification-action:hover {
+    background: @primary-dark;
+}
+
+.summary {
+    color: @text;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.body {
+    color: @text-muted;
+}
+
+.time {
+    color: @primary;
+    font-size: 12px;
+}
+
+.close-button {
+    background: @primary-dark;
+    color: @text;
+    border-radius: 50%;
+    margin: 4px;
+    padding: 4px;
+    min-width: 24px;
+    min-height: 24px;
+}
+
+.close-button:hover {
+    background: @danger;
+    transform: scale(1.1);
+}
+
+/* Urgency levels */
+.notification.low {
+    border-left: 3px solid @text-dim;
+}
+
+.notification.normal {
+    border-left: 3px solid @primary;
+}
+
+.notification.critical {
+    border-left: 3px solid @error;
+    background: rgba({{PRIMARY_DARKEST_RGB}}, 0.85);
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.85; }
+}
+
+/* Control Center */
+.control-center {
+    background: rgba({{BG_LIGHT_RGB}}, 0.85);
+    border: 1px solid rgba({{PRIMARY_DARKEST_RGB}}, 0.6);
+    border-top: 1px solid @border-highlight;
+    border-radius: 16px;
+    margin: 8px;
+    padding: 12px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+}
+
+.control-center-list {
+    background: transparent;
+}
+
+.control-center-list-placeholder {
+    color: @text-dim;
+    padding: 16px;
+}
+
+/* Widgets */
+.widget-title {
+    color: @primary;
+    font-weight: bold;
+    padding: 8px 12px;
+    margin-bottom: 4px;
+}
+
+.widget-title > button {
+    background: @primary-dark;
+    color: @text;
+    border-radius: 8px;
+    padding: 6px 14px;
+    border: none;
+}
+
+.widget-title > button:hover {
+    background: @primary;
+    transform: scale(1.02);
+}
+
+/* DND Toggle */
+.widget-dnd {
+    padding: 8px 12px;
+}
+
+.widget-dnd > switch {
+    background: @primary-dark;
+    border-radius: 14px;
+    border: none;
+    min-width: 50px;
+    min-height: 26px;
+}
+
+.widget-dnd > switch:checked {
+    background: @primary;
+}
+
+.widget-dnd > switch slider {
+    background: @text;
+    border-radius: 50%;
+    min-width: 22px;
+    min-height: 22px;
+    margin: 2px;
+}
+
+/* Label Widget */
+.widget-label {
+    color: @text-muted;
+    padding: 8px 12px;
+}
+
+/* MPRIS Widget */
+.widget-mpris {
+    background: rgba({{PRIMARY_DARKEST_RGB}}, 0.5);
+    border-radius: 12px;
+    margin: 8px;
+    padding: 12px;
+    border: 1px solid rgba({{PRIMARY_RGB}}, 0.2);
+    border-top: 1px solid @border-highlight;
+}
+
+.widget-mpris:hover {
+    background: rgba({{PRIMARY_DARKEST_RGB}}, 0.7);
+}
+
+.widget-mpris-player {
+    padding: 8px;
+}
+
+.widget-mpris-title {
+    color: @text;
+    font-weight: bold;
+}
+
+.widget-mpris-subtitle {
+    color: @text-muted;
+}
+
+.widget-mpris-album-art {
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Buttons Widget */
+.widget-buttons-grid {
+    padding: 8px;
+}
+
+.widget-buttons-grid > flowbox > flowboxchild > button {
+    background: @primary-dark;
+    color: @text;
+    border-radius: 10px;
+    padding: 10px 18px;
+    margin: 4px;
+    border: none;
+}
+
+.widget-buttons-grid > flowbox > flowboxchild > button:hover {
+    background: @primary;
+    transform: scale(1.05);
+}
+
+/* Volume Widget */
+.widget-volume {
+    background: rgba({{PRIMARY_DARKEST_RGB}}, 0.4);
+    border-radius: 12px;
+    margin: 8px;
+    padding: 10px 14px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.widget-volume > box > button {
+    background: transparent;
+    border: none;
+    color: @primary;
+    border-radius: 8px;
+    padding: 6px;
+}
+
+.widget-volume > box > button:hover {
+    color: @primary-light;
+    background: @bg-hover;
+}
+
+/* Backlight Widget */
+.widget-backlight {
+    background: rgba({{PRIMARY_DARKEST_RGB}}, 0.4);
+    border-radius: 12px;
+    margin: 8px;
+    padding: 10px 14px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Inhibitors Widget */
+.widget-inhibitors {
+    padding: 8px 12px;
+}
+
+.widget-inhibitors > list > row {
+    background: @primary-darker;
+    border-radius: 8px;
+    margin: 4px 0;
+    padding: 10px;
+}
+
+.widget-inhibitors > list > row:hover {
+    background: @primary-dark;
+}
+
+/* Menubar */
+.widget-menubar > box > button {
+    background: transparent;
+    border: none;
+    color: @primary;
+    padding: 6px 10px;
+    border-radius: 8px;
+}
+
+.widget-menubar > box > button:hover {
+    color: @primary-light;
+    background: @primary-dark;
+}
+
+/* Top bar in control center */
+.blank-window {
+    background: transparent;
+}
+
+/* Floating notifications */
+.floating-notifications {
+    background: transparent;
+}
+
+/* Scrollbar */
+scrollbar {
+    background: transparent;
+}
+
+scrollbar slider {
+    background: @primary;
+    border-radius: 6px;
+    min-width: 8px;
+}
+
+scrollbar slider:hover {
+    background: @primary-light;
+}
+
+/* Progress bar in notifications */
+progressbar {
+    border-radius: 4px;
+    background: @primary-darker;
+}
+
+progressbar trough {
+    background: @primary-darker;
+    border-radius: 4px;
+    min-height: 6px;
+}
+
+progressbar progress {
+    background: @primary;
+    border-radius: 4px;
+}
